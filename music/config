@@ -1,0 +1,3 @@
+Host 3drm-bonn.privatedns.org
+	HostKeyAlgorithms +ssh-rsa
+	PubkeyAcceptedKeyTypes +ssh-rsa
