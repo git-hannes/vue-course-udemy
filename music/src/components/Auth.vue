@@ -198,9 +198,9 @@ export default {
         email_field: 'required|min:3|max:100|email',
         age_field: 'required|min_value:18|max_value:130',
         password_field: 'required|min:9|max:100|excluded:password',
-        confirm_password_field: 'confirmed:@password_field',
-        country_field: 'required|excluded:Antarctica',
-        tos_field: 'required'
+        confirm_password_field: 'password_missmatched:@password_field',
+        country_field: 'required|country_excluded:Antarctica',
+        tos_field: 'tos'
       },
       userData: {
         country_field: 'USA'
