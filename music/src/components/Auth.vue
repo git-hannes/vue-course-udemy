@@ -88,20 +88,22 @@
               <label class="inline-block mb-2">Name</label>
               <vee-field
                 type="text"
-                name="name"
+                name="name_field"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Enter Name"
               />
-              <ErrorMessage class="text-red-600" name="name" />
+              <ErrorMessage class="text-red-600" name="name_field" />
             </div>
             <!-- Email -->
             <div class="mb-3">
               <label class="inline-block mb-2">Email</label>
-              <input
+              <vee-field
                 type="email"
+                name="email_field"
                 class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
                 placeholder="Enter Email"
               />
+              <ErrorMessage class="text-red-600" name="email_field" />
             </div>
             <!-- Age -->
             <div class="mb-3">
@@ -167,8 +169,8 @@ export default {
     return {
       tab: 'login',
       schema: {
-        name: 'required|min:3|max:100|alpha_spaces',
-        email: '',
+        name_field: 'required|min:3|max:100|alpha_spaces',
+        email_field: 'required|min:3|max:100|email',
         age: '',
         password: '',
         confirm_password: '',
