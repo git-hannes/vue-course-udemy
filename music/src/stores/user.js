@@ -27,6 +27,16 @@ export default defineStore('user', {
       });
 
       this.userLoggedIn = true
+    },
+    async authenticate(values) {
+      await auth.signInWithEmailAndPassword(
+        values.email_field,
+        values.password_field
+      );
+
+      // if previous block of code is successful, it proceeds to this line,
+      // otherwise it throws an error and the code below is not executed 
+      this.userLoggedIn = true
     }
   }
 });
