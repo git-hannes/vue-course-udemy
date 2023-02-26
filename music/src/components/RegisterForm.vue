@@ -80,17 +80,6 @@
       </vee-field>
       <ErrorMessage class="text-red-600" name="country_field" />
     </div>
-    <!-- City -->
-    <div class="mb-3">
-      <label class="inline-block mb-2">City</label>
-      <vee-field
-        type="text"
-        name="city_field"
-        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
-        placeholder="Enter City"
-      />
-      <ErrorMessage class="text-red-600" name="city_field" />
-    </div>
     <!-- TOS -->
     <div class="mb-3 pl-6">
       <vee-field
@@ -113,8 +102,7 @@
 </template>
 
 <script>
-import { auth, usersCollection } from '@/includes/firebase';
-import { mapWritableState } from 'pinia';
+import { mapActions } from 'pinia';
 import useUserStore from '@/stores/user';
 
 export default {
@@ -128,7 +116,6 @@ export default {
         password_field: 'required|min:6|max:100|excluded:password',
         confirm_password_field: 'password_missmatched:@password_field',
         country_field: 'required|country_excluded:Antarctica',
-        city_field: 'required|min:1|max:100|alpha_spaces',
         tos_field: 'tos'
       },
       userData: {
@@ -140,37 +127,18 @@ export default {
       reg_alert_msg: 'Please wait! Creating your account...'
     }
   },
-  computed: {
-    ...mapWritableState(useUserStore, ['userLoggedIn']),
-  },
   methods: {
+    ...mapActions(useUserStore, {
+      createUser: 'register',
+    }),
     async register(values) {
       this.reg_in_submission = true
       this.reg_show_alert = true
       this.reg_alert_variant = 'bg-blue-500'
       this.reg_alert_msg = 'Please wait! Creating your account...'
       
-      let userCred = null
       try {
-        userCred = await auth.createUserWithEmailAndPassword(
-          values.email_field,
-          values.password_field
-        );
-      } catch (error) {
-        this.reg_in_submission = false
-        this.reg_alert_variant = 'bg-red-500'
-        this.reg_alert_msg = error.message
-        return
-      }
-
-      try {
-        await usersCollection.add({
-          name: values.name_field,
-          email: values.email_field,
-          age: values.age_field,
-          country: values.country_field,
-          city: values.city_field,
-        })
+        await this.createUser(values)
       } catch (error) {
         this.reg_in_submission = false
         this.reg_alert_variant = 'bg-red-500'
@@ -178,12 +146,9 @@ export default {
         return
       }
       
-      this.userLoggedIn = true
-
       this.reg_alert_variant = 'bg-green-500'
       this.reg_alert_msg = 'Account created successfully!'
 
-      console.log(userCred)
     }
   }
 }
