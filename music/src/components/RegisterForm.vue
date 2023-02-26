@@ -111,8 +111,8 @@ export default {
       schema: {
         name_field: 'required|min:3|max:100|alpha_spaces',
         email_field: 'required|min:3|max:100|email',
-        age_field: 'required|min_value:18|max_value:130',
-        password_field: 'required|min:9|max:100|excluded:password',
+        age_field: 'required|min_value:1|max_value:130',
+        password_field: 'required|min:6|max:100|excluded:password',
         confirm_password_field: 'password_missmatched:@password_field',
         country_field: 'required|country_excluded:Antarctica',
         tos_field: 'tos'
@@ -133,14 +133,22 @@ export default {
       this.reg_alert_variant = 'bg-blue-500'
       this.reg_alert_msg = 'Please wait! Creating your account...'
       
-      const userCred = await firebase.auth().createUserWithEmailAndPassword(
-        values.email_field,
-        values.password_field
-      );
+      let userCred = null
+      try {
+        userCred = await firebase.auth().createUserWithEmailAndPassword(
+          values.email_field,
+          values.password_field
+        );
+      } catch (error) {
+        this.reg_in_submission = false
+        this.reg_alert_variant = 'bg-red-500'
+        this.reg_alert_msg = error.message
+        return
+      }
 
       this.reg_alert_variant = 'bg-green-500'
       this.reg_alert_msg = 'Account created successfully!'
-      console.log(values)
+      console.log(userCred)
     }
   }
 }
