@@ -80,6 +80,17 @@
       </vee-field>
       <ErrorMessage class="text-red-600" name="country_field" />
     </div>
+    <!-- City -->
+    <div class="mb-3">
+      <label class="inline-block mb-2">City</label>
+      <vee-field
+        type="text"
+        name="city_field"
+        class="block w-full py-1.5 px-3 text-gray-800 border border-gray-300 transition duration-500 focus:outline-none focus:border-black rounded"
+        placeholder="Enter City"
+      />
+      <ErrorMessage class="text-red-600" name="city_field" />
+    </div>
     <!-- TOS -->
     <div class="mb-3 pl-6">
       <vee-field
@@ -102,7 +113,7 @@
 </template>
 
 <script>
-import { auth } from '@/includes/firebase';
+import { auth, usersCollection } from '@/includes/firebase';
 
 export default {
   name: 'RegisterForm',
@@ -115,6 +126,7 @@ export default {
         password_field: 'required|min:6|max:100|excluded:password',
         confirm_password_field: 'password_missmatched:@password_field',
         country_field: 'required|country_excluded:Antarctica',
+        city_field: 'required|min:1|max:100|alpha_spaces',
         tos_field: 'tos'
       },
       userData: {
@@ -139,6 +151,21 @@ export default {
           values.email_field,
           values.password_field
         );
+      } catch (error) {
+        this.reg_in_submission = false
+        this.reg_alert_variant = 'bg-red-500'
+        this.reg_alert_msg = error.message
+        return
+      }
+
+      try {
+        await usersCollection.add({
+          name: values.name_field,
+          email: values.email_field,
+          age: values.age_field,
+          country: values.country_field,
+          city: values.city_field,
+        })
       } catch (error) {
         this.reg_in_submission = false
         this.reg_alert_variant = 'bg-red-500'

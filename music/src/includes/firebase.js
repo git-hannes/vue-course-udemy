@@ -20,5 +20,8 @@ const auth = firebase.auth();
 // create reference to the database
 const db = firebase.firestore();
 
-// export the auth and db references
-export { auth, db };
+// create reference to the users collection
+const usersCollection = db.collection("users");
+
+// export the auth and db references and the users collection
+export { auth, db, usersCollection };
