@@ -3,8 +3,13 @@
   <app-header></app-header>
 
   <!-- Main Content -->
-  <router-view></router-view>
   
+  <!--
+    router-view will be replaced with the component that matches the current route
+    In this case, it will be the Home component
+  -->
+  <router-view></router-view>
+
   <!-- Player -->
   <div class="fixed bottom-0 left-0 bg-white px-4 py-2 w-full">
     <!-- Track Info -->
