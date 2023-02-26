@@ -37,6 +37,13 @@ export default defineStore('user', {
       // if previous block of code is successful, it proceeds to this line,
       // otherwise it throws an error and the code below is not executed 
       this.userLoggedIn = true
+    },
+    async signout() {
+      console.log('signing out');
+      await auth.signOut();
+
+      // see comment above
+      this.userLoggedIn = false
     }
   }
 });
