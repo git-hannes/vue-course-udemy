@@ -3,10 +3,9 @@
   <app-header></app-header>
 
   <!-- Main Content -->
-  
+
   <!--
     router-view will be replaced with the component that matches the current route
-    In this case, it will be the Home component
   -->
   <router-view></router-view>
 
