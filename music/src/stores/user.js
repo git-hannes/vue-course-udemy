@@ -8,16 +8,22 @@ export default defineStore('user', {
   }),
   actions: {
     async register(values) {
-      await auth.createUserWithEmailAndPassword(
+      const userCred = await auth.createUserWithEmailAndPassword(
         values.email_field,
         values.password_field
       );
 
-      await usersCollection.add({
+      // add user to the users collection and set document id to the user's uid
+      await usersCollection.doc(userCred.user.uid).set({
         name: values.name_field,
         email: values.email_field,
         age: values.age_field,
         country: values.country_field,
+      });
+
+      // update the user's display name in the auth service (not the db)
+      await userCred.user.updateProfile({
+        displayName: values.name_field,
       });
 
       this.userLoggedIn = true
